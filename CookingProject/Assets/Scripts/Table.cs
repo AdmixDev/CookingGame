@@ -3,26 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class Seat
+public struct Seat
 {
-    public bool isEmpty = true;
-    public Transform seatPosition;
+    public Transform position;
+    public bool isEmpty;
 }
 
 public class Table : MonoBehaviour
 {
     [SerializeField] private List<Seat> _seats;
+    private bool _isEmpty = true;
+
     public RecipeSO recipeSO;
 
-    // Start is called before the first frame update
-    void Start()
+    public bool CanTakeTable()
     {
-        
+        if (_isEmpty)
+        {
+            return true;
+        }
+
+        return false;
     }
 
-    // Update is called once per frame
-    void Update()
+    public Transform GetSeatPosition()
     {
-        
+        Transform seatPosition = transform;
+        return seatPosition;
     }
 }

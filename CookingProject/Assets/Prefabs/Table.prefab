@@ -79,18 +79,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _seats:
-  - isEmpty: 1
-    seatPosition: {fileID: 2569239278975095750}
-    plateKitchenObject: {fileID: 0}
-  - isEmpty: 1
-    seatPosition: {fileID: 2569239280768980052}
-    plateKitchenObject: {fileID: 0}
-  - isEmpty: 1
-    seatPosition: {fileID: 2569239280887755878}
-    plateKitchenObject: {fileID: 0}
-  - isEmpty: 1
-    seatPosition: {fileID: 2569239280930159552}
-    plateKitchenObject: {fileID: 0}
+  - position: {fileID: 2569239278975095750}
+    isEmpty: 1
+  - position: {fileID: 2569239280768980052}
+    isEmpty: 1
+  - position: {fileID: 2569239280887755878}
+    isEmpty: 1
+  - position: {fileID: 2569239280930159552}
+    isEmpty: 1
+  recipeSO: {fileID: 0}
 --- !u!1 &2569239280768980053
 GameObject:
   m_ObjectHideFlags: 0

@@ -14,6 +14,8 @@ public class DeliveryManager : MonoBehaviour
     [SerializeField] private float _spawnRecipeTimerMax = 4;
     [SerializeField] private int _waitingRecipesMax = 4;
 
+    [SerializeField] private List<Table> _tables = new List<Table>();
+
     private List<RecipeSO> _waitingRecipeSO = new List<RecipeSO>();
 
     private float _spawnRecipeTimer;
@@ -125,5 +127,18 @@ public class DeliveryManager : MonoBehaviour
     public List<RecipeSO> GetWaitingRecipeSOList()
     {
         return _waitingRecipeSO;
+    }
+
+    public Table GetTable()
+    {
+        int random = Random.Range(0, _tables.Count);
+        Table table = _tables[random];
+
+        if (table.CanTakeTable())
+        {
+            return table;
+        }
+
+        return null;
     }
 }
