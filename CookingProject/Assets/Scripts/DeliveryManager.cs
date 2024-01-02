@@ -11,10 +11,7 @@ public class DeliveryManager : MonoBehaviour
     public System.Action OnRecipeFailed;
 
     public RecipeListSO _recipes;
-    [SerializeField] private float _spawnRecipeTimerMax = 4;
     [SerializeField] private int _waitingRecipesMax = 4;
-
-    [SerializeField] private List<Table> _tables = new List<Table>();
 
     private List<RecipeSO> _waitingRecipeSO = new List<RecipeSO>();
 
@@ -35,24 +32,6 @@ public class DeliveryManager : MonoBehaviour
         EventManager.Subscribe(EventManager.EventType.GameOver, GameOver);
     }
 
-    private void Update()
-    {
-        if(_isDelivering)
-        {
-            if (_spawnRecipeTimer <= 0)
-            {
-                if (_waitingRecipeSO.Count < _waitingRecipesMax)
-                {
-                    SpawnRecipe();
-                }
-            }
-            else
-            {
-                _spawnRecipeTimer -= Time.deltaTime;
-            }
-        }
-    }
-
     private void NewGame(object[] parameters)
     {
         _isDelivering = true;
@@ -61,19 +40,18 @@ public class DeliveryManager : MonoBehaviour
     private void GameOver(object[] parameters)
     {
         _isDelivering = false;
-        _spawnRecipeTimer = _spawnRecipeTimerMax;
     }
 
-    private void SpawnRecipe()
+    public RecipeSO GetRecipe()
     {
-        _spawnRecipeTimer = _spawnRecipeTimerMax;
-
         RecipeSO waitingRecipe = _recipes.recipesSOList[Random.Range(0, _recipes.recipesSOList.Count)];
 
         _waitingRecipeSO.Add(waitingRecipe);
         OnRecipeSpawned?.Invoke(waitingRecipe);
 
         Debug.Log(waitingRecipe.RecipeName);
+
+        return waitingRecipe;
     }
 
     public void DeliverRecipe(PlateKitchenObject plateKitchenObject)
@@ -129,16 +107,8 @@ public class DeliveryManager : MonoBehaviour
         return _waitingRecipeSO;
     }
 
-    public Table GetTable()
+    public bool CanSpawnClient()
     {
-        int random = Random.Range(0, _tables.Count);
-        Table table = _tables[random];
-
-        if (table.CanTakeTable())
-        {
-            return table;
-        }
-
-        return null;
+        return _waitingRecipeSO.Count < _waitingRecipesMax;
     }
 }

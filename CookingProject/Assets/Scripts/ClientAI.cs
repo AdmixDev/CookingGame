@@ -10,6 +10,9 @@ public class ClientAI : MonoBehaviour
     private NavMeshAgent _agent;
     private State<ClientInputs> _initState;
 
+    private Table _myTable;
+    private Seat _mySeat;
+
     private void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
@@ -50,20 +53,31 @@ public class ClientAI : MonoBehaviour
         //findTable
         findTable.OnEnter += x =>
         {
-            Table table = DeliveryManager.Instance.GetTable();
-            if (table)
+            _myTable = ClientManager.Instance.GetTable();
+
+            if (_myTable)
             {
-                Debug.Log("Table received");
+                _mySeat = _myTable.GetSeatPosition();
+
+                if(_mySeat != null)
+                {
+                    GoTo(_mySeat.transform.position);
+                }
+
             }
         };
         findTable.OnUpdate += () =>
         {
-
+            if (IsArrived())
+            {
+                Debug.Log("Here");
+                SendInputToFSM(ClientInputs.ORDERING);
+            }
         };
 
         ordering.OnEnter += x =>
         {
-
+            _mySeat.GetRecipe();
         };
         ordering.OnUpdate += () =>
         {
@@ -98,6 +112,7 @@ public class ClientAI : MonoBehaviour
         findTable.GetTransition(ClientInputs.ORDERING).OnTransition += x =>
         {
             Debug.Log("Transition findTable to ordering");
+            LookAt(_mySeat.transform);
         };
 
         //En cambio si estamos en "ordering" y se le pone el input de ClientInputs.EATING se ejecutaria esto
@@ -132,5 +147,28 @@ public class ClientAI : MonoBehaviour
     private void GoTo(Vector3 destiny)
     {
         _agent.SetDestination(destiny);
+    }
+
+    private void LookAt(Transform lookPos)
+    {
+        StartCoroutine(LookAtRoutine(lookPos));
+    }
+
+    private bool IsArrived()
+    {
+        if (_agent.remainingDistance <= _agent.stoppingDistance) return true;
+
+        return false;
+    }
+
+    private IEnumerator LookAtRoutine(Transform lookPos)
+    {
+        Quaternion look = Quaternion.LookRotation(lookPos.forward);
+
+        while (transform.rotation != look)
+        {
+            transform.rotation = Quaternion.Lerp(transform.rotation, look, 10 * Time.deltaTime);
+            yield return null;
+        }
     }
 }
