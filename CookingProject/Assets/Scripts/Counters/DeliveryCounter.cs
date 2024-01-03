@@ -11,7 +11,7 @@ public class DeliveryCounter : Counter, IInteractable
         {
             if (character.GetKitchenObject().TryGetPlate(out PlateKitchenObject plateKitchenObject))
             {
-                DeliveryManager.Instance.DeliverRecipe(plateKitchenObject);
+                //DeliveryManager.Instance.DeliverRecipe(plateKitchenObject);
                 character.GetKitchenObject().DestroySelf();
             }
         }

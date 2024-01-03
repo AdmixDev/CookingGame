@@ -53,17 +53,24 @@ public class ClientAI : MonoBehaviour
         //findTable
         findTable.OnEnter += x =>
         {
-            _myTable = ClientManager.Instance.GetTable();
+            _myTable = DeliveryManager.Instance.GetTable();
 
             if (_myTable)
             {
-                _mySeat = _myTable.GetSeatPosition();
+                _mySeat = _myTable.GetEmptySeatPosition();
 
                 if(_mySeat != null)
                 {
                     GoTo(_mySeat.transform.position);
                 }
-
+                else
+                {
+                    SendInputToFSM(ClientInputs.GO_OUT);
+                }
+            }
+            else
+            {
+                SendInputToFSM(ClientInputs.GO_OUT);
             }
         };
         findTable.OnUpdate += () =>

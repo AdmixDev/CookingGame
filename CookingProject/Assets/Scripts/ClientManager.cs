@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,8 +11,6 @@ public class ClientManager : MonoBehaviour
     [SerializeField] private Transform _spawnPoint;
     [SerializeField] private float _spawnRecipeTimerMax = 4;
     private float _spawnRecipeTimer;
-
-    [SerializeField] private List<Table> _tables = new List<Table>();
 
     private bool _isDelivering;
 
@@ -47,21 +46,10 @@ public class ClientManager : MonoBehaviour
 
     private void SpawnClient()
     {
+        Debug.Log("Can seat");
         _spawnRecipeTimer = _spawnRecipeTimerMax;
+
         var client = Instantiate(_clientPrefab, _spawnPoint);
-    }
-
-    public Table GetTable()
-    {
-        int random = Random.Range(0, _tables.Count);
-        Table table = _tables[random];
-
-        if (table.CanTakeTable())
-        {
-            return table;
-        }
-
-        return null;
     }
 
     private void NewGame(object[] parameters)

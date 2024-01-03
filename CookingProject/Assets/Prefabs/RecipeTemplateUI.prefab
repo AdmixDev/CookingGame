@@ -678,4 +678,4 @@ MonoBehaviour:
   _recipeNameTxt: {fileID: 4019844288645295999}
   _iconContainer: {fileID: 4019844288557399772}
   _iconTemplate: {fileID: 4019844288543523175}
-  _timeMax: 30
+  _timeMax: 50
