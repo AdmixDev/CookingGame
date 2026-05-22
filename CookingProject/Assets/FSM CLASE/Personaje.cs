@@ -88,13 +88,13 @@ public class Personaje : MonoBehaviour
         };
         moving.OnFixedUpdate += () => 
         {
-            _myRb.velocity += (transform.forward * Input.GetAxis("Vertical") * 20f + transform.right * Input.GetAxis("Horizontal") * 20f) * Time.deltaTime;
+            _myRb.linearVelocity += (transform.forward * Input.GetAxis("Vertical") * 20f + transform.right * Input.GetAxis("Horizontal") * 20f) * Time.deltaTime;
         };
         moving.OnExit += x => 
         {
             //x es el input que recibí, por lo que puedo modificar el comportamiento según a donde estoy llendo
             if(x != PlayerInputs.JUMP)
-                _myRb.velocity = Vector3.zero;
+                _myRb.linearVelocity = Vector3.zero;
         };
 
 
